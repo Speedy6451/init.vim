@@ -1,7 +1,7 @@
 if has('win32')
 	let g:session_dir = '%userprofile%\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
 else
-	let g:session_dir = '~\nvim\sessions' " sessions dir
+	let g:session_dir = '~/nvim/sessions' " sessions dir
 endif
 exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/*.vim<C-D><Left><Left><Left><Left><BS>' 
 " save session to file
