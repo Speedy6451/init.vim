@@ -1,8 +1,49 @@
 if has('win32')
 	let g:session_dir = '%userprofile%\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
 else
-	let g:session_dir = '%userprofile%\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
+	let g:session_dir = '~\nvim\sessions' " sessions dir
 endif
+exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/*.vim<C-D><Left><Left><Left><Left><BS>' 
+" save session to file
+
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" load session from file
+
+exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+" delete session
+
+exec 'nnoremap <Leader>gc :!git add . <enter>:!git commit -m "" & git push<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>'
+" git add, commit, and push
+
+exec 'nnoremap <Leader>gp :!git push<enter>'
+" git push
+
+exec 'nnoremap <Leader>gpu :!git pull<enter>'
+" git pull
+
+exec 'nnoremap <Leader>gd :!git diff<enter>'
+" git diff
+
+exec 'nnoremap <C-h> <C-w>h'
+exec 'nnoremap <C-j> <C-w>j'
+exec 'nnoremap <C-k> <C-w>k'
+exec 'nnoremap <C-l> <C-w>l'
+" split nav
+
+exec 'nnoremap <C-Left> <C-w><'
+exec 'nnoremap <C-Down> <C-w>-'
+exec 'nnoremap <C-Up> <C-w>+'
+exec 'nnoremap <C-Right> <C-w>>'
+" split resize
+
+exec 'nnoremap <Leader>n :NERDTreeToggle<enter>'
+" fancy ls
+
+exec 'nnoremap <Leader>g :Goyo<enter>'
+" focus editor
+
+exec 'nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.html<Enter><Enter>'
+" make pdf from current file
 
 exec 'nnoremap <Leader>p :set invpaste<Enter>'
 " easy pasting
