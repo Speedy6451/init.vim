@@ -1,5 +1,5 @@
 if has('win32')
-	let g:session_dir = '%userprofile%\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
+	let g:session_dir = $HOME .'\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
 else
 	let g:session_dir = '~/nvim/sessions' " sessions dir
 endif
@@ -97,7 +97,7 @@ color dracula " colorscheme
 if has('win32') " Installs Vim-Plug
 	if empty(glob('%userprofile%\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
 		call writefile(["{",'"coc.preferences.noselect": false',"}"],
-					\ '%userprofile%\AppData\Local\nvim\coc-settings.json') " make one
+					\ $HOME . '\AppData\Local\nvim\coc-settings.json') " make one
 		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
 	endif
 else
