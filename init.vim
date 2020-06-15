@@ -69,8 +69,8 @@ set showbreak=\ \ \ \ \ \ \ \  " indent wrapped lines
 
 if has('win32') " Installs Vim-Plug
 	if empty(glob('%userprofile%\AppData\Local\nvim\autoload'))
-		silent !curl -fLo %userprofile%\AppData\Local\nvim\autoload\plug.vim --create-dirs 
-					\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+		exec 'silent !curl -fLo ' . $HOME . '\AppData\Local\nvim\autoload\plug.vim --create-dirs '
+					\ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 		autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 	endif
 else
