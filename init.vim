@@ -88,9 +88,25 @@ Plug 'preservim/nerdtree' " fancy ls
 Plug 'airblade/vim-gitgutter' " auto git diff
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
 Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'} " file finding
+Plug 'vimwiki/vimwiki' " wiki
 call plug#end()
 
 color dracula " colorscheme
+
+" create coc-settings.json
+if has('win32') " Installs Vim-Plug
+	if empty(glob('%userprofile%\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
+		call writefile(["{",'"coc.preferences.noselect": false',"}"],
+					\ '%userprofile%\AppData\Local\nvim\coc-settings.json') " make one
+		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
+	endif
+else
+	if empty(glob('~/.config/nvim/coc-settings.json')) " if no coc config
+		call writefile(["{",'"coc.preferences.noselect": false',"}"],
+					\ '~/.config/nvim/coc-settings.json') " make one
+		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
+	endif
+endif
 
 autocmd FileType denite call s:denite_my_settings() " denite config
 function! s:denite_my_settings() abort
