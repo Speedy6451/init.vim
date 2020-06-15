@@ -68,7 +68,7 @@ set updatetime=100 " 100 ms before backup
 set showbreak=\ \ \ \ \ \ \ \  " indent wrapped lines
 
 if has('win32') " Installs Vim-Plug
-	if empty(glob('%userprofile%\AppData\Local\nvim\autoload'))
+	if empty(glob($HOME . '\AppData\Local\nvim\autoload'))
 		exec 'silent !curl -fLo ' . $HOME . '\AppData\Local\nvim\autoload\plug.vim --create-dirs '
 					\ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 		autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -95,7 +95,7 @@ color dracula " colorscheme
 
 " create coc-settings.json
 if has('win32') " Installs Vim-Plug
-	if empty(glob('%userprofile%\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
+	if empty(glob($HOME . '\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
 		call writefile(["{",'"coc.preferences.noselect": false',"}"],
 					\ $HOME . '\AppData\Local\nvim\coc-settings.json') " make one
 		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
@@ -125,7 +125,11 @@ function! s:denite_my_settings() abort
 endfunction
 
 if empty(argv()) " if nvim opened with no args
-	exec 'read !ls ' g:session_dir 
+	if has("win32")
+		exec 'read !dir ' . g:session_dir
+	else
+		exec 'read !ls ' g:session_dir 
+	endif
 	" get sessions
 	normal! ggiClose
 	normal 0
@@ -134,7 +138,7 @@ if empty(argv()) " if nvim opened with no args
 	" set mapping to select
 endif
 
-function Opensession() " open session under cursor
+function! Opensession() " open session under cursor
 	if getline(".") == "Close" " if close selected, close
 		normal u
 	else
