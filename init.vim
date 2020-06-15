@@ -12,8 +12,11 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " delete session
 
-exec 'nnoremap <Leader>gc :!git add . <enter>:!git commit -m "" & git push<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>'
-" git add, commit, and push
+exec 'nnoremap <Leader>ga :!git add '
+" git add
+
+exec 'nnoremap <Leader>gc :!git commit -m ""<left>'
+" git commit
 
 exec 'nnoremap <Leader>gp :!git push<enter>'
 " git push
@@ -84,7 +87,7 @@ Plug 'junegunn/goyo' " focus
 Plug 'preservim/nerdtree' " fancy ls
 Plug 'airblade/vim-gitgutter' " auto git diff
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
-Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'}
+Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'} " file finding
 call plug#end()
 
 color dracula " colorscheme
@@ -105,3 +108,26 @@ function! s:denite_my_settings() abort
 				\ denite#do_map('toggle_select').'j'
 endfunction
 
+if empty(argv()) " if nvim opened with no args
+	exec 'read !ls ' g:session_dir 
+	" get sessions
+	normal! ggiClose
+	normal 0
+	" add close option
+	nnoremap <Enter> :call Opensession()<Enter>
+	" set mapping to select
+endif
+
+function Opensession() " open session under cursor
+	if getline(".") == "Close" " if close selected, close
+		normal u
+	else
+		let g:selected_line = getline(".") " get line under cursor
+		normal u
+		" clear buffer
+		exec 'so ' . g:session_dir. '/' . g:selected_line
+		" open selected session
+		nun <Enter>
+		" unmap enter
+	endif
+endfunction
