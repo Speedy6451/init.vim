@@ -1,5 +1,5 @@
 if has('win32')
-	let g:session_dir = $HOME .'\Desktop\workspace\programming\Vim\nvim-sessions' " specific to my PC, but who cares?
+	let g:session_dir = $HOME .'\Desktop\workspace\programmimg\Vim\nvim-sessions' " specific to my PC, but who cares?
 else
 	let g:session_dir = '~/nvim/sessions' " sessions dir
 endif
@@ -126,7 +126,8 @@ endfunction
 
 if empty(argv()) " if nvim opened with no args
 	if has("win32")
-		exec 'read !dir ' . g:session_dir
+		exec 'read !dir ' . g:session_dir . '\*.vim /B /O-d /tw'
+		" read sessions from new to old
 	else
 		exec 'read !ls ' g:session_dir 
 	endif
@@ -170,8 +171,9 @@ function! Opensession() " open session under cursor
 		let g:selected_line = getline(".") " get line under cursor
 		normal u
 		" clear buffer
+
 		exec 'so ' . g:session_dir. '/' . g:selected_line
-		" open selected session
+		" open selected session 
 		nun <Enter>
 		" unmap enter
 	endif
