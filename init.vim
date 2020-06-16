@@ -132,7 +132,11 @@ if empty(argv()) " if nvim opened with no args
 	endif
 	" get sessions
 	normal! ggiClose
-	normal 0
+	" normal oExit
+	" normal oJournal
+	" normal oWiki
+	normal oMenu
+	normal 0gg
 	" add close option
 	nnoremap <Enter> :call Opensession()<Enter>
 	" set mapping to select
@@ -140,6 +144,27 @@ endif
 
 function! Opensession() " open session under cursor
 	if getline(".") == "Close" " if close selected, close
+		normal uu
+		echo ""
+	elseif getline(".") == "	Exit" " if exit selected, exit
+		normal uu
+		exit
+	elseif getline(".") == "	Wiki" " if exit selected, exit
+		normal \ww
+	elseif getline(".") == "	Journal" " if exit selected, exit
+		echo 'not finished'
+	elseif getline(".") == ""
+		echo ""
+	elseif getline(".") == "Menu"
+		normal oExit
+		normal oJournal
+		normal oWiki
+		normal o
+		normal V3k>
+		normal 2GA (Open)
+		normal 0
+	elseif getline(".") == "Menu (Open)"
+		" normal jV3jdk
 		normal u
 	else
 		let g:selected_line = getline(".") " get line under cursor
