@@ -51,6 +51,10 @@ exec 'nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.ht
 exec 'nnoremap <Leader>p :set invpaste<Enter>'
 " easy pasting
 
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+" coc.vim spellcheck
+
 :tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
 
 set nobackup nowritebackup " don't save those pesky ~vim files eveywhere
@@ -151,17 +155,21 @@ function! Opensession() " open session under cursor
 		normal uu
 		exit
 	elseif getline(".") == "	Wiki" " if exit selected, exit
-		normal \ww
+		normal uu\ww
 	elseif getline(".") == "	Journal" " if exit selected, exit
 		echo 'not finished'
+	elseif getline(".") == "	Ev3" " if exit selected, exit
+		normal uu
+		Nread "scp://robot@ev3dev:22/balance/tools.py"
 	elseif getline(".") == ""
 		echo ""
 	elseif getline(".") == "Menu"
 		normal oExit
 		normal oJournal
 		normal oWiki
+		normal oEv3
 		normal o
-		normal V3k>
+		normal V4k>
 		normal 2GA (Open)
 		normal 0
 	elseif getline(".") == "Menu (Open)"
@@ -169,7 +177,7 @@ function! Opensession() " open session under cursor
 		normal u
 	else
 		let g:selected_line = getline(".") " get line under cursor
-		normal u
+		normal uu
 		" clear buffer
 
 		exec 'so ' . g:session_dir. '/' . g:selected_line
