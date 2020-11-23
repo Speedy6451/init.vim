@@ -51,13 +51,23 @@ exec 'nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.ht
 exec 'nnoremap <Leader>p :set invpaste<Enter>'
 " easy pasting
 
+ " make cursor go down a row when line wrap.
+nnoremap j gj
+nnoremap k gk
+" skip wrapped lines with g
+nnoremap gj j 
+nnoremap gk k
+
 vmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>a <Plug>(coc-codeaction-selected)
 " coc.vim spellcheck
 
 :tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
 
-set nobackup nowritebackup " don't save those pesky ~vim files eveywhere
+" set nobackup nowritebackup " don't save those pesky ~vim files everywhere
+set backupdir=~/.vim/backup " TODO: make this cross-platform
+set directory=~/.vim/swap " probably unnecessary, not opening 8gig files.
+
 autocmd Filetype json syntax match Comment +\/\/.\+$+ " highlight json comments
 set number " line numbers
 set pyx=2 " idk why i have this
@@ -70,6 +80,9 @@ syntax on " denite wanted it
 set termguicolors " make colors prettier
 set updatetime=100 " 100 ms before backup
 set showbreak=\ \ \ \ \ \ \ \  " indent wrapped lines
+set mouse=a " enable using mouse (and scroll)
+set gdefault " find and replace globally by default 
+set virtualedit=block " allow visual block selection out of buffer
 
 if has('win32') " Installs Vim-Plug
 	if empty(glob($HOME . '\AppData\Local\nvim\autoload'))
@@ -93,6 +106,11 @@ Plug 'airblade/vim-gitgutter' " auto git diff
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
 Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'} " file finding
 Plug 'vimwiki/vimwiki' " wiki
+Plug 'jackguo380/vim-lsp-cxx-highlight' " c, c++, c# highlighting
+Plug 'tpope/vim-surround' " plugin for surrounding (html good)
+Plug 'tpope/vim-repeat' " plugin to make plugins work with .
+Plug 'tpope/vim-fugitive' " git plugin
+Plug 'tpope/vim-unimpaired' " url encoder, among others
 call plug#end()
 
 color dracula " colorscheme
@@ -102,14 +120,14 @@ if has('win32') " Installs Vim-Plug
 	if empty(glob($HOME . '\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
 		call writefile(["{",'"coc.preferences.noselect": false',"}"],
 					\ $HOME . '\AppData\Local\nvim\coc-settings.json') " make one
-		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
+		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictionary coc-spell-checker " install plugins
 	endif
-else
-	if empty(glob('~/.config/nvim/coc-settings.json')) " if no coc config
-		call writefile(["{",'"coc.preferences.noselect": false',"}"],
-					\ '~/.config/nvim/coc-settings.json') " make one
-		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
-	endif
+"else
+"	if empty(glob('~/.config/nvim/coc-settings.json')) " if no coc config
+"		call writefile(["{",'"coc.preferences.noselect": false',"}"],
+"					\ '~/.config/nvim/coc-settings.json') " make one
+"		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictonary coc-spell-checker " install plugins
+"	endif
 endif
 
 autocmd FileType denite call s:denite_my_settings() " denite config
@@ -133,7 +151,7 @@ if empty(argv()) " if nvim opened with no args
 		exec 'read !dir ' . g:session_dir . '\*.vim /B /O-d /tw'
 		" read sessions from new to old
 	else
-		exec 'read !ls ' g:session_dir 
+		exec 'read !ls -t ' g:session_dir 
 	endif
 	" get sessions
 	normal! ggiClose
@@ -180,6 +198,7 @@ function! Opensession() " open session under cursor
 		normal uu
 		" clear buffer
 
+		exec 'silent !touch ' . g:session_dir. '/' . g:selected_line
 		exec 'so ' . g:session_dir. '/' . g:selected_line
 		" open selected session 
 		nun <Enter>
