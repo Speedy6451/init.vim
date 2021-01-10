@@ -12,57 +12,69 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " delete session
 
-exec 'nnoremap <Leader>ga :!git add '
+silent nnoremap <Leader>ga :!git add 
 " git add
 
-exec 'nnoremap <Leader>gc :!git commit -m ""<left>'
+silent nnoremap <Leader>gc :!git commit -m ""<left>
 " git commit
 
-exec 'nnoremap <Leader>gp :!git push<enter>'
+silent nnoremap <Leader>gp :!git push<enter>
 " git push
 
-exec 'nnoremap <Leader>gpu :!git pull<enter>'
+silent nnoremap <Leader>gpu :!git pull<enter>
 " git pull
 
-exec 'nnoremap <Leader>gd :!git diff<enter>'
+silent nnoremap <Leader>gd :!git diff<enter>
 " git diff
 
-exec 'nnoremap <C-h> <C-w>h'
-exec 'nnoremap <C-j> <C-w>j'
-exec 'nnoremap <C-k> <C-w>k'
-exec 'nnoremap <C-l> <C-w>l'
+silent nnoremap <Leader>as :AutoSaveToggle<enter>
+" toggle autosave
+
+let g:auto_save = 0
+augroup ft_openscad
+  au!
+  au FileType openscad let b:auto_save = 1
+augroup END
+
+silent nnoremap <C-h> <C-w>h
+silent nnoremap <C-j> <C-w>j
+silent nnoremap <C-k> <C-w>k
+silent nnoremap <C-l> <C-w>l
 " split nav
 
-exec 'nnoremap <C-Left> <C-w><'
-exec 'nnoremap <C-Down> <C-w>-'
-exec 'nnoremap <C-Up> <C-w>+'
-exec 'nnoremap <C-Right> <C-w>>'
+silent nnoremap <C-Left> <C-w><
+silent nnoremap <C-Down> <C-w>-
+silent nnoremap <C-Up> <C-w>+
+silent nnoremap <C-Right> <C-w>>
 " split resize
 
-exec 'nnoremap <Leader>n :NERDTreeToggle<enter>'
+silent nnoremap <Leader>n :NERDTreeToggle<enter>
 " fancy ls
 
-exec 'nnoremap <Leader>g :Goyo<enter>'
+silent nnoremap <Leader>g :Goyo<enter>
 " focus editor
 
-exec 'nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.html<Enter><Enter>'
+silent nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.html<Enter><Enter>
 " make pdf from current file
 
-exec 'nnoremap <Leader>p :set invpaste<Enter>'
+silent nnoremap <Leader>p :set invpaste<Enter>
 " easy pasting
 
  " make cursor go down a row when line wrap.
-nnoremap j gj
-nnoremap k gk
+silent nnoremap j gj
+silent nnoremap k gk
 " skip wrapped lines with g
-nnoremap gj j 
-nnoremap gk k
+silent nnoremap gj j 
+silent nnoremap gk k
 
-vmap <leader>a <Plug>(coc-codeaction-selected)
-nmap <leader>a <Plug>(coc-codeaction-selected)
+ " remap alt+jk to scroll
+ " nnoremap 
+
+silent vmap <leader>a <Plug>(coc-codeaction-selected)
+silent nmap <leader>a <Plug>(coc-codeaction-selected)
 " coc.vim spellcheck
 
-:tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
+silent tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
 
 " set nobackup nowritebackup " don't save those pesky ~vim files everywhere
 set backupdir=~/.vim/backup " TODO: make this cross-platform
@@ -111,16 +123,21 @@ Plug 'tpope/vim-surround' " plugin for surrounding (html good)
 Plug 'tpope/vim-repeat' " plugin to make plugins work with .
 Plug 'tpope/vim-fugitive' " git plugin
 Plug 'tpope/vim-unimpaired' " url encoder, among others
+Plug 'sirtaj/vim-openscad' " openSCAD highlighting
+Plug '907th/vim-auto-save' " autosave (activate with \as)
 call plug#end()
 
 color dracula " colorscheme
+
+" ccls global config (idk bout this, only importing one header dir at a time)
+" let g:coc_user_config['languageserver'].ccls.initializationOptions.clang.extraargs = '	-std=c++17'
 
 " create coc-settings.json
 if has('win32') " Installs Vim-Plug
 	if empty(glob($HOME . '\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
 		call writefile(["{",'"coc.preferences.noselect": false',"}"],
 					\ $HOME . '\AppData\Local\nvim\coc-settings.json') " make one
-		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-python coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictionary coc-spell-checker " install plugins
+		CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-pyright coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictionary coc-spell-checker " install plugins
 	endif
 "else
 "	if empty(glob('~/.config/nvim/coc-settings.json')) " if no coc config
@@ -167,17 +184,17 @@ endif
 
 function! Opensession() " open session under cursor
 	if getline(".") == "Close" " if close selected, close
-		normal uu
+		silent normal uu
 		echo ""
 	elseif getline(".") == "	Exit" " if exit selected, exit
-		normal uu
+		silent normal uu
 		exit
 	elseif getline(".") == "	Wiki" " if exit selected, exit
-		normal uu\ww
+		silent normal uu\ww
 	elseif getline(".") == "	Journal" " if exit selected, exit
 		echo 'not finished'
 	elseif getline(".") == "	Ev3" " if exit selected, exit
-		normal uu
+		silent normal uu
 		Nread "scp://robot@ev3dev:22/balance/tools.py"
 	elseif getline(".") == ""
 		echo ""
@@ -192,10 +209,10 @@ function! Opensession() " open session under cursor
 		normal 0
 	elseif getline(".") == "Menu (Open)"
 		" normal jV3jdk
-		normal u
+		silent normal u
 	else
 		let g:selected_line = getline(".") " get line under cursor
-		normal uu
+		silent normal uu
 		" clear buffer
 
 		exec 'silent !touch ' . g:session_dir. '/' . g:selected_line
