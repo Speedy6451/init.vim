@@ -12,7 +12,8 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " delete session
 
-silent nnoremap <Leader>ga :!git add 
+" TODO use plugin
+silent nnoremap <Leader>ga :!git add  
 " git add
 
 silent nnoremap <Leader>gc :!git commit -m ""<left>
@@ -70,8 +71,8 @@ silent nnoremap gk k
  " remap alt+jk to scroll
  " nnoremap 
 
-silent vmap <leader>a <Plug>(coc-codeaction-selected)
-silent nmap <leader>a <Plug>(coc-codeaction-selected)
+silent vmap <leader>a :CocAction<Enter>
+silent nmap <leader>a :CocAction<Enter>
 " coc.vim spellcheck
 
 silent tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
@@ -112,7 +113,7 @@ endif
 
 call plug#begin('~/.vim/plugged') " plugins
 Plug 'dracula/vim', {'as': 'dracula'} " colorscheme
-Plug 'junegunn/goyo' " focus
+Plug 'junegunn/goyo.vim' " focus
 Plug 'preservim/nerdtree' " fancy ls
 Plug 'airblade/vim-gitgutter' " auto git diff
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
@@ -125,6 +126,7 @@ Plug 'tpope/vim-fugitive' " git plugin
 Plug 'tpope/vim-unimpaired' " url encoder, among others
 Plug 'sirtaj/vim-openscad' " openSCAD highlighting
 Plug '907th/vim-auto-save' " autosave (activate with \as)
+Plug 'gustavo-hms/garbo' " scheme for vairied backgrounds
 call plug#end()
 
 color dracula " colorscheme
@@ -222,3 +224,6 @@ function! Opensession() " open session under cursor
 		" unmap enter
 	endif
 endfunction
+
+
+color default " temporary, so I can me HaCkErMaN with my green colorcheme.
