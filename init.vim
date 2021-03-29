@@ -12,27 +12,8 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS
 exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
 " delete session
 
-" TODO use plugin
-silent nnoremap <Leader>ga :!git add  
-" git add
-
-silent nnoremap <Leader>gc :!git commit -m ""<left>
-" git commit
-
-silent nnoremap <Leader>gp :!git push<enter>
-" git push
-
-silent nnoremap <Leader>gpu :!git pull<enter>
-" git pull
-
-silent nnoremap <Leader>gd :!git diff<enter>
-" git diff
-
-silent nnoremap <Leader>as :AutoSaveToggle<enter>
-" toggle autosave
-
 let g:auto_save = 0
-augroup ft_openscad
+augroup ft_openscad " auto save on scad files by default so live preview will work
   au!
   au FileType openscad let b:auto_save = 1
 augroup END
@@ -59,45 +40,46 @@ silent nnoremap <Leader> b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.h
 " make pdf from current file
 
 silent nnoremap <Leader>p :set invpaste<Enter>
-" easy pasting
+" disable autoformatting so pasted code looks right
 
- " make cursor go down a row when line wrap.
+ " keep cursor from skipping wrapped lines
 silent nnoremap j gj
 silent nnoremap k gk
 " skip wrapped lines with g
 silent nnoremap gj j 
 silent nnoremap gk k
 
- " remap alt+jk to scroll
+ " remap alt+jk to scroll TODO
  " nnoremap 
 
 silent vmap <leader>a :CocAction<Enter>
 silent nmap <leader>a :CocAction<Enter>
-" coc.vim spellcheck
+" coc.vim spellcheck and refactoring
 
-silent tnoremap <Esc> <C-\><C-n> " easy escape terminal (makes using vi through term impossible)
+silent tnoremap <Esc> <C-\><C-n> 
+" easy escape terminal (at the expense of using vi in a subterm)
 
 " set nobackup nowritebackup " don't save those pesky ~vim files everywhere
-set backupdir=~/.vim/backup " TODO: make this cross-platform
+set backupdir=~/.vim/backup " save backup files outside of current dir TODO: make this cross-platform
 set directory=~/.vim/swap " probably unnecessary, not opening 8gig files.
 
-autocmd Filetype json syntax match Comment +\/\/.\+$+ " highlight json comments
-set number " line numbers
-set pyx=2 " idk why i have this
+autocmd Filetype json syntax match Comment +\/\/.\+$+ " highlight comments in json
+set number " show line numbers
+set pyx=2 " set python version?
 set breakindent " pretty indent
 set formatoptions+="lb" " linebreak between words
-set lbr " linebreak
+set lbr " break lines instead of scrolling
 set nocompatible " denite wanted it
 filetype plugin on " denite wanted it
 syntax on " denite wanted it
 set termguicolors " make colors prettier
-set updatetime=100 " 100 ms before backup
+set updatetime=100 " backup every 100 ms
 set showbreak=\ \ \ \ \ \ \ \  " indent wrapped lines
-set mouse=a " enable using mouse (and scroll)
+set mouse=a " enable using mouse (and scroll wheel)
 set gdefault " find and replace globally by default 
 set virtualedit=block " allow visual block selection out of buffer
 
-if has('win32') " Installs Vim-Plug
+if has('win32') " Installs Vim-Plug TODO: fix this, it currently works on 0% of platforms
 	if empty(glob($HOME . '\AppData\Local\nvim\autoload'))
 		exec 'silent !curl -fLo ' . $HOME . '\AppData\Local\nvim\autoload\plug.vim --create-dirs '
 					\ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -112,21 +94,21 @@ else
 endif
 
 call plug#begin('~/.vim/plugged') " plugins
-Plug 'dracula/vim', {'as': 'dracula'} " colorscheme
+Plug 'dracula/vim', {'as': 'dracula'} " blue colorscheme
 Plug 'junegunn/goyo.vim' " focus
 Plug 'preservim/nerdtree' " fancy ls
 Plug 'airblade/vim-gitgutter' " auto git diff
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " autocomplete
-Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'} " file finding
-Plug 'vimwiki/vimwiki' " wiki
+Plug 'Shougo/denite.nvim', {'do' : ':UpdateRemotePlugins'} " file finding TODO: learn how to use or uninstall
+Plug 'vimwiki/vimwiki' " hyperlinks in vim TODO: start using this or uninstall
 Plug 'jackguo380/vim-lsp-cxx-highlight' " c, c++, c# highlighting
-Plug 'tpope/vim-surround' " plugin for surrounding (html good)
+Plug 'tpope/vim-surround' " plugin for surrounding (html good) TODO: use this or uninstall
 Plug 'tpope/vim-repeat' " plugin to make plugins work with .
 Plug 'tpope/vim-fugitive' " git plugin
-Plug 'tpope/vim-unimpaired' " url encoder, among others
+Plug 'tpope/vim-unimpaired' " url encoder, among others TODO: use this or uninstall
 Plug 'sirtaj/vim-openscad' " openSCAD highlighting
 Plug '907th/vim-auto-save' " autosave (activate with \as)
-Plug 'gustavo-hms/garbo' " scheme for vairied backgrounds
+Plug 'gustavo-hms/garbo' " colorscheme for light backgrounds
 call plug#end()
 
 color dracula " colorscheme
@@ -134,8 +116,9 @@ color dracula " colorscheme
 " ccls global config (idk bout this, only importing one header dir at a time)
 " let g:coc_user_config['languageserver'].ccls.initializationOptions.clang.extraargs = '	-std=c++17'
 
-" create coc-settings.json
-if has('win32') " Installs Vim-Plug
+" create coc-settings.json TODO make this work and combine with plug installer
+" installer
+if has('win32')
 	if empty(glob($HOME . '\AppData\Local\nvim\coc-settings.json')) " if no coc.vim config
 		call writefile(["{",'"coc.preferences.noselect": false',"}"],
 					\ $HOME . '\AppData\Local\nvim\coc-settings.json') " make one
@@ -149,7 +132,7 @@ if has('win32') " Installs Vim-Plug
 "	endif
 endif
 
-autocmd FileType denite call s:denite_my_settings() " denite config
+autocmd FileType denite call s:denite_my_settings() " denite config TODO figure out how to use this
 function! s:denite_my_settings() abort
 	nnoremap <silent><buffer><expr> <CR>
 				\ denite#do_map('do_action')
@@ -165,7 +148,7 @@ function! s:denite_my_settings() abort
 				\ denite#do_map('toggle_select').'j'
 endfunction
 
-if empty(argv()) " if nvim opened with no args
+if empty(argv()) " custom nvim home screen
 	if has("win32")
 		exec 'read !dir ' . g:session_dir . '\*.vim /B /O-d /tw'
 		" read sessions from new to old
@@ -184,20 +167,19 @@ if empty(argv()) " if nvim opened with no args
 	" set mapping to select
 endif
 
-function! Opensession() " open session under cursor
-	if getline(".") == "Close" " if close selected, close
+function! Opensession() " open session under cursor, or run homepage command
+	if getline(".") == "Close" " clear buffer, for example to write something
 		silent normal uu
+		silent nun <Enter>
+		" unmap enter (disable this function from running again)
 		echo ""
-	elseif getline(".") == "	Exit" " if exit selected, exit
+	elseif getline(".") == "	Exit" " quit nvim
 		silent normal uu
 		exit
-	elseif getline(".") == "	Wiki" " if exit selected, exit
+	elseif getline(".") == "	Wiki" " open vimwiki
 		silent normal uu\ww
-	elseif getline(".") == "	Journal" " if exit selected, exit
+	elseif getline(".") == "	Journal" " create or open today's journal entry TODO
 		echo 'not finished'
-	elseif getline(".") == "	Ev3" " if exit selected, exit
-		silent normal uu
-		Nread "scp://robot@ev3dev:22/balance/tools.py"
 	elseif getline(".") == ""
 		echo ""
 	elseif getline(".") == "Menu"
@@ -219,9 +201,9 @@ function! Opensession() " open session under cursor
 
 		exec 'silent !touch ' . g:session_dir. '/' . g:selected_line
 		exec 'so ' . g:session_dir. '/' . g:selected_line
-		" open selected session 
+		" open session under cursor
 		nun <Enter>
-		" unmap enter
+		" unmap enter (disable this function from running again)
 	endif
 endfunction
 
