@@ -109,6 +109,7 @@ Plug 'tpope/vim-unimpaired' " url encoder, among others TODO: use this or uninst
 Plug 'sirtaj/vim-openscad' " openSCAD highlighting
 Plug '907th/vim-auto-save' " autosave (activate with \as)
 Plug 'gustavo-hms/garbo' " colorscheme for light backgrounds
+Plug 'gcmt/taboo.vim' " set tab names
 call plug#end()
 
 color dracula " colorscheme
