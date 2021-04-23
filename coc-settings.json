@@ -1,0 +1,43 @@
+{
+    "suggest.noselect": false,
+
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                },
+		"highlight": { "lsRanges" : true },
+		"clang": {
+			"resourceDir": "/Library/Developer/CommandLineTools/usr/lib/clang/11.0.3",
+			"extraArgs": [
+				"-I",
+				"/Users/64001707/Documents/Programming/cpp/include",
+				"-I",
+				"/Library/Developer/CommandLineTools/usr/include/c++/v1",
+				"-std=c++17"
+			]
+		}
+            }
+        }
+    },
+    "clangd.semanticHighlighting": true,
+    "cSpell.userWords": [
+      "Minecraft",
+      "tpope"
+    ]
+}
