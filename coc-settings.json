@@ -38,6 +38,8 @@
     "clangd.semanticHighlighting": true,
     "cSpell.userWords": [
       "Minecraft",
+      "Odometry",
+      "setpoint",
       "tpope"
     ]
 }

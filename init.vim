@@ -62,6 +62,7 @@ silent tnoremap <Esc> <C-\><C-n>
 " set nobackup nowritebackup " don't save those pesky ~vim files everywhere
 set backupdir=~/.vim/backup " save backup files outside of current dir TODO: make this cross-platform
 set directory=~/.vim/swap " probably unnecessary, not opening 8gig files.
+set undodir=~/.vim/undo " save undo over restart
 
 autocmd Filetype json syntax match Comment +\/\/.\+$+ " highlight comments in json
 set number " show line numbers
@@ -78,6 +79,10 @@ set showbreak=\ \ \ \ \ \ \ \  " indent wrapped lines
 set mouse=a " enable using mouse (and scroll wheel)
 set gdefault " find and replace globally by default 
 set virtualedit=block " allow visual block selection out of buffer
+
+set shiftwidth=4 " make indentation less pronounced
+set expandtab
+set tabstop=4
 
 if has('win32') " Installs Vim-Plug TODO: fix this, it currently works on 0% of platforms
 	if empty(glob($HOME . '\AppData\Local\nvim\autoload'))
@@ -108,11 +113,12 @@ Plug 'tpope/vim-fugitive' " git plugin
 Plug 'tpope/vim-unimpaired' " url encoder, among others TODO: use this or uninstall
 Plug 'sirtaj/vim-openscad' " openSCAD highlighting
 Plug '907th/vim-auto-save' " autosave (activate with \as)
-Plug 'gustavo-hms/garbo' " colorscheme for light backgrounds
+Plug 'gustavo-hms/garbo', {'as' : 'garbage'} " colorscheme for light backgrounds
 Plug 'gcmt/taboo.vim' " set tab names
+Plug 'Shirk/vim-gas' " asm highlighting
 call plug#end()
 
-color dracula " colorscheme
+color garbo " colorscheme
 
 " ccls global config (idk bout this, only importing one header dir at a time)
 " let g:coc_user_config['languageserver'].ccls.initializationOptions.clang.extraargs = '	-std=c++17'
@@ -209,4 +215,3 @@ function! Opensession() " open session under cursor, or run homepage command
 endfunction
 
 
-color default " temporary, so I can me HaCkErMaN with my green colorcheme.
