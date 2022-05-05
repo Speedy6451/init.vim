@@ -36,10 +36,14 @@
         }
     },
     "clangd.semanticHighlighting": true,
+    "rust-analyzer.updates.checkOnStartup": false,
     "cSpell.userWords": [
       "Minecraft",
       "Odometry",
+      "repr",
       "setpoint",
-      "tpope"
+      "tpope",
+      "ultigrep",
+      "wgpu"
     ]
 }
