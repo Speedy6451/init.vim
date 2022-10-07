@@ -25,7 +25,7 @@ augroup END
 
 " au BufRead,BufNewFile *.toml setfiletype javascript
 
-silent nmap s ddko 
+silent nmap s 0C
 " replace current line
 
 nmap <silent> gd <Plug>(coc-definition)
@@ -33,6 +33,15 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 " jump to various
+
+" use space or \
+exec 'nmap <Space> <Leader>'
+
+nnoremap <leader>w :w<enter>
+
+" end paste at bottom of selection
+vnoremap <silent> p p`]
+nnoremap <silent> p p`]
 
 nmap <leader>r <Plug>(coc-rename)
 " refactor
@@ -78,6 +87,8 @@ silent nnoremap <C-Right> <C-w>>
 
 silent nnoremap <Leader>n :NERDTreeToggle<enter>
 " fancy ls
+
+let g:goyo_width = '75%'
 
 silent nnoremap <Leader>g :Goyo<enter>
 " focus editor
@@ -130,6 +141,9 @@ set shiftwidth=4 " make indentation less pronounced
 set expandtab
 set tabstop=4
 
+set scrolloff=2 " margin on bottom
+set autoread " read files changed in other editors
+
 let first_run = 0
 if has('win32') " Installs Vim-Plug TODO: fix this, it currently works on 0% of platforms
 	if empty(glob($HOME . '\AppData\Local\nvim\autoload'))
@@ -181,6 +195,8 @@ Plug 'fcpg/vim-farout'
 "Plug 'pgdouyoun/vim-yin-yang'
 "Plug 'FranzyExists/aquarium-vim'
 Plug 'DingDean/wgsl.vim', {'branch': 'main'}
+Plug 'foxbunny/vim-amber'
+Plug 'SirVer/ultisnips'
 call plug#end()
 
 if first_run
@@ -209,6 +225,9 @@ function! s:denite_my_settings() abort
 endfunction
 
 if empty(argv()) " custom nvim home screen
+    set buftype=nofile " disable undo warnings
+    file startup " set name
+
 	if has("win32")
 		exec 'read !dir ' . g:session_dir . '\*.vim /B /O-d /tw'
 		" read sessions from new to old
@@ -231,6 +250,8 @@ function! Opensession() " open session under cursor, or run homepage command
 	if getline(".") == "Close" " clear buffer, for example to write something
 		silent normal uu
 		silent nun <Enter>
+        silent file untitled " set name
+        silent set buftype="" " normal window
 		" unmap enter (disable this function from running again)
 		echo ""
 	elseif getline(".") == "    Exit" " quit nvim
@@ -255,6 +276,7 @@ function! Opensession() " open session under cursor, or run homepage command
 	elseif getline(".") == "Menu (Open)"
 		" normal jV3jdk
 		silent normal u
+        echo ""
 	else
 		let g:selected_line = getline(".") " get line under cursor
 		silent normal uu
