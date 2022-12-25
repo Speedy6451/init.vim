@@ -45,5 +45,8 @@
       "tpope",
       "ultigrep",
       "wgpu"
+    ],
+    "cSpell.ignoreWords": [
+      "deque"
     ]
 }

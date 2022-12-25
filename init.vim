@@ -25,7 +25,7 @@ augroup END
 
 " au BufRead,BufNewFile *.toml setfiletype javascript
 
-silent nmap s 0C
+silent nmap s ^C
 " replace current line
 
 nmap <silent> gd <Plug>(coc-definition)
@@ -88,6 +88,8 @@ silent nnoremap <C-Right> <C-w>>
 silent nnoremap <Leader>n :NERDTreeToggle<enter>
 " fancy ls
 
+silent nnoremap <Leader>t :UndotreeToggle<enter>
+
 let g:goyo_width = '75%'
 
 silent nnoremap <Leader>g :Goyo<enter>
@@ -120,10 +122,12 @@ silent tnoremap <Esc> <C-\><C-n>
 set backupdir=~/.vim/backup " save backup files outside of current dir TODO: make this cross-platform
 set directory=~/.vim/swap " probably unnecessary, not opening 8gig files.
 set undodir=~/.vim/undo " save undo over restart
+set undofile
 
 autocmd Filetype json syntax match Comment +\/\/.\+$+ " highlight comments in json
 set number " show line numbers
-set pyx=2 " set python version?
+" it isn't 2020 anymore :(
+"set pyx=2 " set python version?
 set breakindent " pretty indent
 set formatoptions+="lb" " linebreak between words
 set lbr " break lines instead of scrolling
@@ -197,16 +201,30 @@ Plug 'fcpg/vim-farout'
 Plug 'DingDean/wgsl.vim', {'branch': 'main'}
 Plug 'foxbunny/vim-amber'
 Plug 'SirVer/ultisnips'
+Plug 'tribela/vim-transparent'
+Plug 'mbbill/undotree'
 call plug#end()
+
+" default
+let g:transparent_groups = ['Normal', 'Comment', 'Constant', 'Special', 'Identifier',
+                            \ 'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String',
+                            \ 'Function', 'Conditional', 'Repeat', 'Operator', 'Structure',
+                            \ 'LineNr', 'NonText', 'SignColumn', 'CursorLineNr', 'EndOfBuffer']
+
+" coc.nvim
+let g:transparent_groups += ['NormalFloat', 'CocFloating']
 
 if first_run
 	PlugInstall --sync " install plugins
 	CocInstall coc-json coc-css coc-html coc-eslint coc-tsserver coc-pyright coc-stylelint coc-tslint coc-vimlsp coc-java coc-word coc-dictionary coc-spell-checker coc-toml coc-rust-analyzer coc-lua " install autocomplete plugins
 	silent execute "!mkdir -p " . g:session_dir
+	silent execute "!mkdir -p " . &l:backupdir
+	silent execute "!mkdir -p " . &l:directory
+	silent execute "!mkdir -p " . &l:undodir
 endif
 unlet first_run
 
-color aylin " colorscheme
+color falcon " colorscheme
 
 autocmd FileType denite call s:denite_my_settings() " denite config TODO figure out how to use this
 function! s:denite_my_settings() abort
