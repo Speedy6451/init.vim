@@ -1,7 +1,7 @@
 if has('win32')
 	let g:session_dir = $HOME .'\Desktop\workspace\programmimg\Vim\nvim-sessions' " specific to my PC, but who cares?
 else
-	let g:session_dir = '~/nvim/sessions' " sessions dir
+	let g:session_dir = '~/.vim/sessions' " sessions dir
 endif
 exec 'nnoremap <Leader>ss :NERDTreeClose<Enter>:mks! ' . g:session_dir . '/*.vim<C-D><Left><Left><Left><Left><BS>' 
 " save session to file
@@ -62,6 +62,16 @@ function! s:show_documentation()
   endif
 endfunction
 " show docs on K
+
+nnoremap <leader>l :call DmenuFzf()<cr>
+
+function! DmenuFzf() " heavily inspired by https://leafo.net/posts/using_dmenu_to_open_quickly.html
+    let name= system("git ls-files | dmenu -i -l 32 -p edit | tr -d '\n'")
+    if empty(name)
+        return
+    endif
+    execute "edit " . name
+endfunction
 
 if has('nvim-0.4.0') || has('patch-8.2.0750')
   nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
@@ -307,5 +317,3 @@ function! Opensession() " open session under cursor, or run homepage command
 		" unmap enter (disable this function from running again)
 	endif
 endfunction
-
-
