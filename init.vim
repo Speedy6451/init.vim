@@ -3,13 +3,13 @@ if has('win32')
 else
 	let g:session_dir = '~/.vim/sessions' " sessions dir
 endif
-exec 'nnoremap <Leader>ss :NERDTreeClose<Enter>:mks! ' . g:session_dir . '/*.vim<C-D><Left><Left><Left><Left><BS>' 
+exec 'nnoremap <Leader>ss :NERDTreeClose<Enter>:mks! ' . g:session_dir . '/*<C-D><BS>' 
 " save session to file
 
-exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sr :so ' . g:session_dir. '/*<C-D><BS>'
 " load session from file
 
-exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*.vim<C-D><BS><BS><BS><BS><BS>'
+exec 'nnoremap <Leader>sd :!del ' . g:session_dir. '/*<C-D><BS>'
 " delete session
 
 let g:auto_save = 0
