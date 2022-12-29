@@ -121,8 +121,8 @@ silent nnoremap gk k
  " remap alt+jk to scroll TODO
  " nnoremap 
 
-silent vmap <leader>a :CocAction<Enter>
-silent nmap <leader>a :CocAction<Enter>
+silent vmap <leader>a <Plug>(coc-codeaction-selected)
+silent nmap <leader>a <Plug>(coc-codeaction-line)
 " coc.vim spellcheck and refactoring
 
 silent tnoremap <Esc> <C-\><C-n> 
