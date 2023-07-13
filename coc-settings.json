@@ -1,5 +1,6 @@
 {
     "suggest.noselect": false,
+    "codeLens.enable": true,
 
     "languageserver": {
         "ccls": {
@@ -40,6 +41,8 @@
     "cSpell.userWords": [
       "Minecraft",
       "Odometry",
+      "Vulkan",
+      "endianness",
       "repr",
       "setpoint",
       "tpope",

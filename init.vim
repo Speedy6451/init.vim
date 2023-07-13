@@ -36,6 +36,7 @@ nmap <silent> gr <Plug>(coc-references)
 
 " use space or \
 exec 'nmap <Space> <Leader>'
+exec 'vmap <Space> <Leader>'
 
 nnoremap <leader>w :w<enter>
 
@@ -44,6 +45,7 @@ vnoremap <silent> p p`]
 nnoremap <silent> p p`]
 
 nmap <leader>r <Plug>(coc-rename)
+"vmap <leader>r <Plug>(coc-refactor)
 " refactor
 
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -95,6 +97,9 @@ silent nnoremap <C-Up> <C-w>+
 silent nnoremap <C-Right> <C-w>>
 " split resize
 
+silent nnoremap <Leader>e :ToggleTerm<enter>
+" fancy ls
+
 silent nnoremap <Leader>n :NERDTreeToggle<enter>
 " fancy ls
 
@@ -111,6 +116,9 @@ silent nnoremap <Leader>b :w<Enter>:!pandoc %:t --pdf-engine=xelatex -o %:t:r.ht
 silent nnoremap <Leader>p :set invpaste<Enter>
 " disable autoformatting so pasted code looks right
 
+silent nnoremap <Leader>c :set rnu!<Enter>
+" relative line number toggle on c
+
  " keep cursor from skipping wrapped lines
 silent nnoremap j gj
 silent nnoremap k gk
@@ -122,7 +130,8 @@ silent nnoremap gk k
  " nnoremap 
 
 silent vmap <leader>a <Plug>(coc-codeaction-selected)
-silent nmap <leader>a <Plug>(coc-codeaction-line)
+" silent nmap <leader>a <Plug>(coc-codeaction-line)
+silent nmap <leader>a <Plug>(coc-codeaction-cursor)
 " coc.vim spellcheck and refactoring
 
 silent tnoremap <Esc> <C-\><C-n> 
@@ -213,8 +222,17 @@ Plug 'foxbunny/vim-amber'
 Plug 'SirVer/ultisnips'
 Plug 'tribela/vim-transparent'
 Plug 'mbbill/undotree'
+" Plug 'danth/pathfinder.vim' " training
+Plug 'yuttie/comfortable-motion.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
+" Plug 'andweeb/presence.nvim' " discord
+Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 call plug#end()
 
+lua require("toggleterm").setup()
+lua require('crates').setup()
 " default
 let g:transparent_groups = ['Normal', 'Comment', 'Constant', 'Special', 'Identifier',
                             \ 'Statement', 'PreProc', 'Type', 'Underlined', 'Todo', 'String',
@@ -278,9 +296,8 @@ function! Opensession() " open session under cursor, or run homepage command
 	if getline(".") == "Close" " clear buffer, for example to write something
 		silent normal uu
 		silent nun <Enter>
-        silent file untitled " set name
-        silent set buftype="" " normal window
 		" unmap enter (disable this function from running again)
+        bd
 		echo ""
 	elseif getline(".") == "    Exit" " quit nvim
 		silent normal uu
@@ -289,6 +306,11 @@ function! Opensession() " open session under cursor, or run homepage command
 		silent normal uu\ww
 	elseif getline(".") ==  "    NTree" " open nerdtree
         silent normal uu
+        bd
+        " the thing on the following line not existing probably cost me several
+        " hours over the years cleaning up random empty files with one-word
+        " names
+		silent nun <Enter>
         NERDTreeToggle
 	elseif getline(".") == ""
 		echo ""
