@@ -229,6 +229,10 @@ Plug 'saecki/crates.nvim', { 'tag': 'v0.3.0' }
 " Plug 'andweeb/presence.nvim' " discord
 Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'mfussenegger/nvim-dap'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'jdhao/better-escape.vim'
+Plug 'tikhomirov/vim-glsl'
 call plug#end()
 
 lua require("toggleterm").setup()

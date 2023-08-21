@@ -1,6 +1,6 @@
 {
     "suggest.noselect": false,
-    "codeLens.enable": true,
+    "codeLens.enable": false,
 
     "languageserver": {
         "ccls": {
@@ -39,10 +39,12 @@
     "clangd.semanticHighlighting": true,
     "rust-analyzer.updates.checkOnStartup": false,
     "cSpell.userWords": [
+      "Framebuffer",
       "Minecraft",
       "Odometry",
       "Vulkan",
       "endianness",
+      "rasterization",
       "repr",
       "setpoint",
       "tpope",
