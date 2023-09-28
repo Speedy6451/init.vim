@@ -3,6 +3,14 @@
     "codeLens.enable": false,
 
     "languageserver": {
+        "nix": {
+            "command": "rnix-lsp",
+            "filetypes": ["nix"]
+        },
+        "nix": {
+            "command": "pkgbuild-language-server",
+            "filetypes": ["PKGBUILD"]
+        },
         "ccls": {
             "command": "ccls",
             "filetypes": [
